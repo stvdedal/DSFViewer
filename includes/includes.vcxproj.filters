@@ -15,18 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="navmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="navmap_impl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="navmap.h">
+    <ClInclude Include="imap_render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="navmap_impl.h">
+    <ClInclude Include="imarker_render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

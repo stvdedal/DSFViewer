@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{642FA393-57BD-4C9E-8920-BC9C3C3C1246}</ProjectGuid>
-    <RootNamespace>libolha</RootNamespace>
+    <ProjectGuid>{6B0D85FB-B871-4709-B03C-D303F1DECEF4}</ProjectGuid>
+    <RootNamespace>libglhelpers</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -87,7 +87,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmapthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -95,7 +94,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmapthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,7 +103,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmapthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -119,7 +116,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmapthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -127,17 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="navmap.cpp" />
-    <ClCompile Include="navmap_impl.cpp" />
+    <ClInclude Include="drawable_object.h" />
+    <ClInclude Include="gl_check_error.h" />
+    <ClInclude Include="shader_maker.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="navmap.h" />
-    <ClInclude Include="navmap_impl.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\libdsfmapthread\libdsfmapthread.vcxproj">
-      <Project>{62d333f4-732b-4e2e-aca7-032db019a230}</Project>
-    </ProjectReference>
+    <ClCompile Include="drawable_object.cpp" />
+    <ClCompile Include="shader_maker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
