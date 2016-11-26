@@ -1,10 +1,11 @@
 #ifndef NAVMAP_H_
 #define NAVMAP_H_
 
+#include "inavmap.h"
 #include <imap_render.h>
 #include <imarker_render.h>
 
-class NavMap
+class NavMap : public INavMap
 {
     IMapRender* _mapRender;
     IMarkerRender* _markerRender;

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="drawable_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dsf_map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -26,13 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="drawable_object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dsf_map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gl_check_error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utilities.h">

@@ -81,7 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -92,7 +92,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -105,7 +105,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,6 +134,9 @@
   <ItemGroup>
     <ProjectReference Include="..\libdsfmap\libdsfmap.vcxproj">
       <Project>{93e110d2-4d4e-4a87-87c2-2f95240ff034}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libglhelpers\libglhelpers.vcxproj">
+      <Project>{6b0d85fb-b871-4709-b03c-d303f1decef4}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libnavmap\libnavmap.vcxproj">
       <Project>{edfee4de-63a2-40a3-a1e3-ac1183af4a78}</Project>
