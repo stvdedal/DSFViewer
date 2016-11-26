@@ -314,13 +314,12 @@ void DsfRender::load(int lon, int lat)
     snprintf(fullpath, sizeof(fullpath), "%s\\%s\\%s", root_dir, folder, file);
     char cmd[512];
     snprintf(cmd, sizeof(cmd), "\"\"%s\" x \"%s\" -o%s\" >NUL", "C:\\Program Files\\7-Zip\\7z.exe", fullpath, extact_dir);
+    char extracted_file[64];
+    snprintf(extracted_file, sizeof(extracted_file), "%s\\%s", extact_dir, file);
 
     int rv = system(cmd);
     if (rv == 0)
     {
-        char extracted_file[64];
-        snprintf(extracted_file, sizeof(extracted_file), "%s\\%s", extact_dir, file);
-
         bool result = false;
         try
         {
@@ -348,7 +347,11 @@ void DsfRender::load(int lon, int lat)
     {
         std::cerr << "Error: file \"" << fullpath << "\" not extracted (rv=" << rv << ")" << std::endl;
     }
-    system("del /Q tmp\\extracted_dsf\\*");
+
+    char delcmd[512];
+    snprintf(delcmd, sizeof(delcmd), "del /Q %s", extracted_file);
+
+    system(delcmd);
 }
 
 void DsfRender::setTransform(const glm::mat4& m)
