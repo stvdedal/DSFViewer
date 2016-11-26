@@ -1,10 +1,11 @@
 #ifndef DSF_MAP_H_
 #define DSF_MAP_H_
 
+#include <imap_render.h>
 #include "dsf_render.h"
 #include <map>
 
-class DsfMap
+class DsfMap : public IMapRender
 {
     static const GLchar* vertexShaderSource;
     static const GLchar* fragmentShaderSource;
