@@ -305,7 +305,7 @@ void DsfRender::load(int lon, int lat)
     system("del /Q tmp\\extracted_dsf\\*");
 
     const char* root_dir = "F:\\X-Plane 10\\Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
-    const char* extact_dir = "tmp\\extracted_dsf";
+    const char* extact_dir = "C:\\Windows\\Temp";
     char folder[64];
     snprintf(folder, sizeof(folder), "%+02d%+04d", lat - lat % 10, lon - lon % 10);
     char file[64];
