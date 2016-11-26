@@ -85,6 +85,9 @@ MapTextureProvider::~MapTextureProvider()
 
 void MapTextureProvider::start(GLuint width, GLuint height)
 {
+    if (_working)
+        return;
+
     _width = width;
     _height = height;
 
@@ -94,6 +97,8 @@ void MapTextureProvider::start(GLuint width, GLuint height)
 
 void MapTextureProvider::stop()
 {
+    if (!_working)
+        return;
     {
         std::unique_lock<std::mutex> lck(_mtx);
 
