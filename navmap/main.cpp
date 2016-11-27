@@ -12,6 +12,9 @@
 #include "drawable_object.h"
 #include <gl_check_error.h>
 
+static const char* dsfRootDir = "F:\\X-Plane 10\\Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
+static const char* tmpDir = "C:\\Windows\\Temp";
+
 //
 // uncomment to use NavMapThread
 //   comment to use NavMap
@@ -23,7 +26,13 @@
 class DsfMapSimpleMarkerNavMapThread : public NavMapThread
 {
     IMarkerRender* createMarkerRender() { return new SimpleMarker; }
-    IMapRender*    createMapRender()    { return new DsfMap; }
+    IMapRender*    createMapRender()
+    {
+        DsfMap* dsfMap = new DsfMap;
+        dsfMap->setDsfDirectory(dsfRootDir);
+        dsfMap->setTmpDirectory(tmpDir);
+        return dsfMap;
+    }
 
     static const GLchar* vertexShaderSource;
     static const GLchar* fragmentShaderSource;
@@ -104,7 +113,7 @@ void DsfMapSimpleMarkerNavMapThread::render()
 
     _texture.guard.lock();
     if (!_texture.dirty)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _texture.width, _texture.height, 0, GL_RGB, GL_UNSIGNED_BYTE, _texture.buf.data());
+        glTexImage2D(GL_TEXTURE_2D, 0, _texture.format, _texture.width, _texture.height, 0, _texture.format, GL_UNSIGNED_BYTE, _texture.buf.data());
     _texture.guard.unlock();
 
     _rect();
@@ -238,6 +247,8 @@ int main(int argc, char** argv)
 #else
     SimpleMarker marker;
     DsfMap dsfMap;
+    dsfMap.setDsfDirectory(dsfRootDir);
+    dsfMap.setTmpDirectory(tmpDir);
     navMap = new NavMap(&dsfMap, &marker);
 #endif
 

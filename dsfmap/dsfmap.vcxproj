@@ -136,6 +136,9 @@
     <ProjectReference Include="..\libdsfmap\libdsfmap.vcxproj">
       <Project>{93e110d2-4d4e-4a87-87c2-2f95240ff034}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\libglhelpers\libglhelpers.vcxproj">
+      <Project>{6b0d85fb-b871-4709-b03c-d303f1decef4}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

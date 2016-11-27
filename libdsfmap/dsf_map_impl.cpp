@@ -1,11 +1,12 @@
 #include "dsf_map_impl.h"
 #include "utilities.h"
+#include <shader_maker.h>
 
 #include <glm/gtx/transform.hpp>
 
 #include <iostream>
 #include <cmath>
-
+#include <cstdio>
 
 const GLchar* DsfMapImpl::vertexShaderSource = R"(
 #version 330 core
@@ -26,48 +27,8 @@ void main()
 }
 )";
 
-GLuint DsfMapImpl::makeShader(GLenum shaderType, const char* shaderSource)
-{
-    GLint success;
-    GLchar infoLog[512];
-    GLuint shader;
-    shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &shaderSource, NULL);
-    glCompileShader(shader);
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(shader, sizeof(infoLog), NULL, infoLog);
-        std::cerr << "[GL] ERROR: Shader compilation failure\n" << infoLog << std::endl;
-    }
-    return shader;
-}
-
-GLuint DsfMapImpl::makeShaderProgram(const GLchar* vshaderSource, const GLchar* fshaderSource)
-{
-    GLuint vertShader = makeShader(GL_VERTEX_SHADER, vshaderSource);
-    GLuint fragShader = makeShader(GL_FRAGMENT_SHADER, fshaderSource);
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vertShader);
-    glAttachShader(program, fragShader);
-    glLinkProgram(program);
-
-    GLint success;
-    GLchar infoLog[512];
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(program, sizeof(infoLog), NULL, infoLog);
-        std::cerr << "[GL] ERROR: Shader linkage failure\n" << infoLog << std::endl;
-    }
-
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
-
-    return program;
-}
-
 DsfMapImpl::DsfMapImpl()
-    : _shaderProgram(makeShaderProgram(vertexShaderSource, fragmentShaderSource))
+    : _shaderProgram(makeProgram(vertexShaderSource, fragmentShaderSource))
 {
 }
 
@@ -76,8 +37,57 @@ DsfMapImpl::~DsfMapImpl()
     glDeleteProgram(_shaderProgram);
 }
 
+void DsfMapImpl::loadDsf(DsfRender* dsf, int lon, int lat)
+{
+    char dsfDir[64];
+    snprintf(dsfDir, sizeof(dsfDir), "%+02d%+04d", lat - lat % 10, lon - lon % 10);
+    char dsfFile[64];
+    snprintf(dsfFile, sizeof(dsfFile), "%+02d%+04d.dsf", lat, lon);
+    char fullpath[512];
+    snprintf(fullpath, sizeof(fullpath), "%s\\%s\\%s", _dsf_directory.c_str(), dsfDir, dsfFile);
+    char extracted_file[64];
+    snprintf(extracted_file, sizeof(extracted_file), "%s\\%s", _tmp_directory.c_str(), dsfFile);
+
+    if (extract(fullpath, _tmp_directory))
+    {
+        bool result = dsf->loadFromFile(extracted_file);
+        std::cerr << extracted_file << " result="<< result << std::endl;
+    }
+    else
+    {
+        std::cerr << "[DsfMap] Error: file \"" << extract << "\" not extracted" << std::endl;
+    }
+    std::remove(extracted_file);
+}
+
+bool DsfMapImpl::extract(const std::string& packedFile, const std::string& outputDir)
+{
+    char cmd[512];
+    snprintf(cmd, sizeof(cmd), "\"\"%s\" x \"%s\" -o%s\" >NUL",
+        "C:\\Program Files\\7-Zip\\7z.exe",
+        packedFile.c_str(),
+        outputDir.c_str());
+    return system(cmd) == 0;
+}
+
+void DsfMapImpl::setDsfDirectory(const std::string& dir)
+{
+    _dsf_directory = dir;
+}
+
+void DsfMapImpl::setTmpDirectory(const std::string& dir)
+{
+    _tmp_directory = dir;
+}
+
 void DsfMapImpl::prepare(double lon, double lat, double scale_x, double scale_y)
 {
+    if (_dsf_directory.empty() || _tmp_directory.empty())
+    {
+        std::cerr << "[DsfMap] ERROR: directories are empty" << std::endl;
+        return;
+    }
+
     GLfloat left_lon = GLfloat(lon - scale_x / 2.0);    // longitude of the -1.0 NDC.X
     GLfloat bottom_lat = GLfloat(lat - scale_y / 2.0);  // latitude of the -1.0 NDC.Y
     GLfloat right_lon = GLfloat(lon + scale_x / 2.0);   // longitude of the +1.0 NDC.X
@@ -106,7 +116,10 @@ void DsfMapImpl::prepare(double lon, double lat, double scale_x, double scale_y)
             DsfRender* dsf = &_objects[std::make_pair(dsf_lon, dsf_lat)];
 
             if (dsf->age < 0)
-                dsf->load(dsf_lon, dsf_lat);
+            {
+                loadDsf(dsf, dsf_lon, dsf_lat);
+                //dsf->load(dsf_lon, dsf_lat);
+            }
             dsf->age = 0;
 
             glm::mat4 transform;
@@ -132,9 +145,6 @@ void DsfMapImpl::prepare(double lon, double lat, double scale_x, double scale_y)
 
 void DsfMapImpl::render() const
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     glUseProgram(_shaderProgram);
     GLint transformLoc = glGetUniformLocation(_shaderProgram, "transform");
 

@@ -7,6 +7,9 @@
 
 #include <dsf_map.h>
 
+static const char* dsfRootDir = "F:\\X-Plane 10\\Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
+static const char* tmpDir = "C:\\Windows\\Temp";
+
 static double centr_point_lon = 46.0;
 static double centr_point_lat = 51.0;
 static double scale_map_x = 1.0;
@@ -118,6 +121,8 @@ int main(int argc, char** argv)
     glViewport(0, 0, pxl_width, pxl_height);
 
     dsfmap = new DsfMap;
+    dsfmap->setDsfDirectory(dsfRootDir);
+    dsfmap->setTmpDirectory(tmpDir);
     dsfmap->prepare(centr_point_lon, centr_point_lat, scale_map_x, scale_map_y);
 
     glfwSetKeyCallback(window, glfw_key_callback);
@@ -125,6 +130,9 @@ int main(int argc, char** argv)
 
     while (!glfwWindowShouldClose(window))
     {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         dsfmap->render();
         glfwSwapBuffers(window);
         glfwWaitEvents();

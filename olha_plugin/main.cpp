@@ -19,7 +19,6 @@ static XPLMDataRef posLongitude;
 static XPLMDataRef posLatitude;
 static XPLMDataRef posMagPsi;
 
-
 static FILE* logFile = nullptr;
 static DsfNavMapThread* navMap = nullptr;
 
@@ -51,10 +50,6 @@ PLUGIN_API int XPluginStart(char* outName, char* outSig, char* outDesc)
     XPLMRegisterDrawCallback(MyDrawCallback, xplm_Phase_Gauges, 0, NULL);
     XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0f, NULL);
 
-#if defined VERBOSE
-    fprintf(logFile, "XPluginStart success\n");
-#endif
-
     return 1;
 }
 
@@ -67,15 +62,12 @@ PLUGIN_API void	XPluginStop(void)
 
 PLUGIN_API void XPluginEnable(void)
 {
-    navMap->setPlane(46.0, 51.0, 0.0);
-    navMap->setPlaneScale(1.0, 1.0);
+    navMap->setPlane(XPLMGetDataf(posLongitude), XPLMGetDataf(posLatitude), XPLMGetDataf(posMagPsi));
+    navMap->setPlaneScale(0.1, 0.1);
     navMap->setScale(1.0, 1.0);
 
     navMap->start(gTexWidth, gTexHeight);
     navMap->setRect(GLfloat(gTexLext), GLfloat(gTexBottom), GLfloat(gTexWidth), GLfloat(gTexHeight));
-#if defined VERBOSE
-    fprintf(logFile, "XPluginEnable called\n");
-#endif
 }
 
 PLUGIN_API void XPluginDisable(void)
@@ -96,12 +88,6 @@ static float MyFlightLoopCallback(
     int                  inCounter,
     void *               inRefcon)
 {
-    fprintf(logFile, "MyFlightLoopCallback called\n");
-
-    float lon = XPLMGetDataf(posLongitude);
-    float lat = XPLMGetDataf(posLatitude);
-    float hdg = XPLMGetDataf(posMagPsi);
-    navMap->setPlane(lon, lat, hdg);
-
+    navMap->setPlane(XPLMGetDataf(posLongitude), XPLMGetDataf(posLatitude), XPLMGetDataf(posMagPsi));
     return 0.2f;
 }

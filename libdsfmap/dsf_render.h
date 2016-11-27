@@ -20,7 +20,7 @@ public:
     DsfRender(DsfRender&& rhs);
     virtual ~DsfRender();
 
-    void load(int lon, int lat);
+    bool loadFromFile(const char* file);
     void setTransform(const glm::mat4& m);
     void render(GLuint transformLoc) const;
 

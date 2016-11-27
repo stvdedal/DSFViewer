@@ -50,6 +50,9 @@ void NavMapThread::work()
                 double map_Scale_Y = _Map_Scale_Y;
 
                 lck.unlock();
+                glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+
                 navMap->setPlane(planeMarker_Lon, planeMarker_Lat, planeMarker_Hdg);
                 navMap->setScale(map_Scale_X, map_Scale_Y);
                 navMap->setPlaneScale(planeMarker_Scale_X, planeMarker_Scale_Y);
@@ -60,9 +63,10 @@ void NavMapThread::work()
                 _texture.dirty = false;
                 _texture.width = _width;
                 _texture.height = _height;
+                _texture.format = GL_RGBA;
                 _texture.buf.clear();
-                _texture.buf.resize(_width * _height * 3, char(0x80));
-                glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, _texture.buf.data());
+                _texture.buf.resize(_width * _height * 4, char(0xFF));
+                glGetTexImage(GL_TEXTURE_2D, 0, _texture.format, GL_UNSIGNED_BYTE, _texture.buf.data());
                 _texture.guard.unlock();
             }
 
