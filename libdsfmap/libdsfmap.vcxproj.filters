@@ -21,6 +21,9 @@
     <ClCompile Include="dsf_render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dsf_map_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dsf_map.h">
@@ -31,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="dsf_render.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dsf_map_impl.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

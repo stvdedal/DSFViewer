@@ -15,40 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="navmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_marker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inavmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="navmap_thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gl_context.h">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_marker_impl.h">
+    </ClCompile>
+    <ClCompile Include="dsfnavmap_thread.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="navmap.cpp">
+    <ClInclude Include="dsfnavmap_thread.h">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_marker.cpp">
+    </ClInclude>
+    <ClInclude Include="include_gl.h">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="navmap_thread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gl_context.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_marker_impl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    </ClInclude>
   </ItemGroup>
 </Project>

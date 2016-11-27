@@ -2,21 +2,12 @@
 #define DSF_MAP_H_
 
 #include <imap_render.h>
-#include "dsf_render.h"
-#include <map>
+
+class DsfMapImpl;
 
 class DsfMap : public IMapRender
 {
-    static const GLchar* vertexShaderSource;
-    static const GLchar* fragmentShaderSource;
-
-    GLuint _shaderProgram;
-    static GLuint makeShader(GLenum shaderType, const char* shaderSource);
-    static GLuint makeShaderProgram(const GLchar* vshaderSource, const GLchar* fshaderSource);
-
-    // map longitude and latitude to DSF
-    std::map<std::pair<int,int>, DsfRender> _objects;
-
+    DsfMapImpl* _impl;
 public:
     DsfMap();
     ~DsfMap();
