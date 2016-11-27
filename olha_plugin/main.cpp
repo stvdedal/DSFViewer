@@ -19,7 +19,6 @@ static XPLMDataRef posLongitude;
 static XPLMDataRef posLatitude;
 static XPLMDataRef posMagPsi;
 
-
 static FILE* logFile = nullptr;
 static DsfNavMapThread* navMap = nullptr;
 

@@ -29,13 +29,13 @@
     <ClInclude Include="dsf_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="dsf_map_impl.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="dsf_render.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="dsf_map_impl.h">
+    <ClInclude Include="utilities.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

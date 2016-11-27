@@ -12,6 +12,9 @@
 #include "drawable_object.h"
 #include <gl_check_error.h>
 
+static const char* dsfRootDir = "F:\\X-Plane 10\\Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
+static const char* tmpDir = "C:\\Windows\\Temp";
+
 //
 // uncomment to use NavMapThread
 //   comment to use NavMap
@@ -23,7 +26,13 @@
 class DsfMapSimpleMarkerNavMapThread : public NavMapThread
 {
     IMarkerRender* createMarkerRender() { return new SimpleMarker; }
-    IMapRender*    createMapRender()    { return new DsfMap; }
+    IMapRender*    createMapRender()
+    {
+        DsfMap* dsfMap = new DsfMap;
+        dsfMap->setDsfDirectory(dsfRootDir);
+        dsfMap->setTmpDirectory(tmpDir);
+        return dsfMap;
+    }
 
     static const GLchar* vertexShaderSource;
     static const GLchar* fragmentShaderSource;
@@ -238,6 +247,8 @@ int main(int argc, char** argv)
 #else
     SimpleMarker marker;
     DsfMap dsfMap;
+    dsfMap.setDsfDirectory(dsfRootDir);
+    dsfMap.setTmpDirectory(tmpDir);
     navMap = new NavMap(&dsfMap, &marker);
 #endif
 

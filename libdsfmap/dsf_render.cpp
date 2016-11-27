@@ -298,10 +298,37 @@ DsfRender::~DsfRender()
 {
 }
 
-void DsfRender::load(int lon, int lat)
+bool DsfRender::loadFromFile(const char* file)
 {
+    bool result = false;
+
     _dsf_objects.clear();
 
+    try
+    {
+        dsf::File dsfFile;
+        if (dsfFile.open(file) &&
+            dsfFile.header_ok() &&
+            dsfFile.md5sum_ok())
+        {
+            dsfFile.prepare();
+
+            DsfConstructor<std::list<DrawElements>> constructor(_dsf_objects);
+            result = dsfFile.exec(&constructor);
+        }
+    }
+    catch (...)
+    {
+        std::cerr << "Error: dsf exception" << std::endl;
+    }
+    if (!result)
+    {
+        std::cerr << "Error: dsf error" << std::endl;
+    }
+
+    return result;
+
+#if 0
     system("del /Q tmp\\extracted_dsf\\*");
 
     const char* root_dir = "F:\\X-Plane 10\\Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
@@ -352,6 +379,7 @@ void DsfRender::load(int lon, int lat)
     snprintf(delcmd, sizeof(delcmd), "del /Q %s", extracted_file);
 
     system(delcmd);
+#endif
 }
 
 void DsfRender::setTransform(const glm::mat4& m)

@@ -50,6 +50,9 @@ void NavMapThread::work()
                 double map_Scale_Y = _Map_Scale_Y;
 
                 lck.unlock();
+                glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+
                 navMap->setPlane(planeMarker_Lon, planeMarker_Lat, planeMarker_Hdg);
                 navMap->setScale(map_Scale_X, map_Scale_Y);
                 navMap->setPlaneScale(planeMarker_Scale_X, planeMarker_Scale_Y);

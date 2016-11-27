@@ -4,6 +4,9 @@
 
 #include <XPLMGraphics.h>
 
+static const char* dsfRootDir = "Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
+static const char* tmpDir = "C:\\Windows\\Temp";
+
 IMarkerRender* DsfNavMapThread::createMarkerRender()
 {
     return new SimpleMarker;
@@ -11,7 +14,10 @@ IMarkerRender* DsfNavMapThread::createMarkerRender()
 
 IMapRender* DsfNavMapThread::createMapRender()
 {
-    return new DsfMap;
+    DsfMap* dsfMap = new DsfMap;
+    dsfMap->setDsfDirectory(dsfRootDir);
+    dsfMap->setTmpDirectory(tmpDir);
+    return dsfMap;
 }
 
 DsfNavMapThread::DsfNavMapThread()
@@ -20,8 +26,8 @@ DsfNavMapThread::DsfNavMapThread()
     XPLMBindTexture2d(_textId, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 DsfNavMapThread::~DsfNavMapThread()
