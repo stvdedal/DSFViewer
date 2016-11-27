@@ -4,31 +4,6 @@
 
 #include <XPLMGraphics.h>
 
-#if 0
-const char* DsfNavMapThread::vertexShaderSource = R"(
-#version 330 core
-layout (location = 0) in vec3 position;
-layout (location = 1) in vec2 tex;
-out vec2 texCoord;
-void main()
-{
-    gl_Position = vec4(position, 1.0);
-    texCoord = tex;
-}
-)";
-
-const char* DsfNavMapThread::fragmentShaderSource = R"(
-#version 330 core
-in vec2 texCoord;
-out vec4 color;
-uniform sampler2D texSampler;
-void main()
-{
-    color = texture(texSampler, texCoord);
-}
-)";
-#endif
-
 IMarkerRender* DsfNavMapThread::createMarkerRender()
 {
     return new SimpleMarker;
@@ -69,15 +44,15 @@ void DsfNavMapThread::render()
 
     _texture.guard.lock();
     if (!_texture.dirty)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _texture.width, _texture.height, 0, GL_RGB, GL_UNSIGNED_BYTE, _texture.buf.data());
+        glTexImage2D(GL_TEXTURE_2D, 0, _texture.format, _texture.width, _texture.height, 0, _texture.format, GL_UNSIGNED_BYTE, _texture.buf.data());
     _texture.guard.unlock();
 
     XPLMSetGraphicsState(
         0,        // No fog, equivalent to glDisable(GL_FOG);
         1,        // One texture, equivalent to glEnable(GL_TEXTURE_2D);
         0,        // No lighting, equivalent to glDisable(GL_LIGHT0);
-        0,        // No alpha testing, e.g glDisable(GL_ALPHA_TEST);
-        0,        // Use alpha blending, e.g. glEnable(GL_BLEND);
+        1,        // No alpha testing, e.g glDisable(GL_ALPHA_TEST);
+        1,        // Use alpha blending, e.g. glEnable(GL_BLEND);
         0,        // No depth read, e.g. glDisable(GL_DEPTH_TEST);
         0);       // No depth write, e.g. glDepthMask(GL_FALSE);
 

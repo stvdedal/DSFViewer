@@ -9,9 +9,6 @@ class DsfNavMapThread : public NavMapThread
     IMarkerRender* createMarkerRender();
     IMapRender*    createMapRender();
 
-    static const char* vertexShaderSource;
-    static const char* fragmentShaderSource;
-
     int _textId;
 
     GLfloat _left, _bottom, _width, _height;

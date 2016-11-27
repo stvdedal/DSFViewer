@@ -60,9 +60,10 @@ void NavMapThread::work()
                 _texture.dirty = false;
                 _texture.width = _width;
                 _texture.height = _height;
+                _texture.format = GL_RGBA;
                 _texture.buf.clear();
-                _texture.buf.resize(_width * _height * 3, char(0x80));
-                glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, _texture.buf.data());
+                _texture.buf.resize(_width * _height * 4, char(0xFF));
+                glGetTexImage(GL_TEXTURE_2D, 0, _texture.format, GL_UNSIGNED_BYTE, _texture.buf.data());
                 _texture.guard.unlock();
             }
 

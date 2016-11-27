@@ -104,7 +104,7 @@ void DsfMapSimpleMarkerNavMapThread::render()
 
     _texture.guard.lock();
     if (!_texture.dirty)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _texture.width, _texture.height, 0, GL_RGB, GL_UNSIGNED_BYTE, _texture.buf.data());
+        glTexImage2D(GL_TEXTURE_2D, 0, _texture.format, _texture.width, _texture.height, 0, _texture.format, GL_UNSIGNED_BYTE, _texture.buf.data());
     _texture.guard.unlock();
 
     _rect();

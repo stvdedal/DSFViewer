@@ -40,6 +40,7 @@ protected:
         std::mutex guard;
         bool dirty;
         int width, height;
+        int format;
         std::vector<char> buf;
     };
     FutureTexture _texture;
