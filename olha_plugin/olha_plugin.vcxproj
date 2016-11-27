@@ -19,32 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EDFEE4DE-63A2-40A3-A1E3-AC1183AF4A78}</ProjectGuid>
-    <RootNamespace>libnavmap</RootNamespace>
+    <ProjectGuid>{01FA795A-6B48-4870-8696-DBFDA2166FFC}</ProjectGuid>
+    <RootNamespace>olha_plugin</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -68,35 +68,51 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>F:\X-Plane 10\Aircraft\my\yak-42D\plugins\olha\64\</OutDir>
+    <TargetName>win</TargetName>
+    <TargetExt>.xpl</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>F:\X-Plane 10\Aircraft\my\yak-42D\plugins\olha\64\</OutDir>
+    <TargetName>win</TargetName>
+    <TargetExt>.xpl</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>F:\X-Plane 10\Aircraft\my\yak-42D\plugins\olha\32\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>win</TargetName>
+    <TargetExt>.xpl</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>F:\X-Plane 10\Aircraft\my\yak-42D\plugins\olha\32\</OutDir>
+    <TargetName>win</TargetName>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetExt>.xpl</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\X-Plane 10\SDK\CHeaders\XPLM;F:\X-Plane 10\SDK\CHeaders\Widgets;$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDLL;WIN32;_CRT_SECURE_NO_WARNINGS;XPLM;VERBOSE;NDEBUG;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;XPLM200=1;XPLM210=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM.lib;XPWidgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\X-Plane 10\SDK\CHeaders\XPLM;F:\X-Plane 10\SDK\CHeaders\Widgets;$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDLL;WIN32;_CRT_SECURE_NO_WARNINGS;XPLM;VERBOSE;NDEBUG;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;XPLM200=1;XPLM210=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM_64.lib;XPWidgets_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -105,11 +121,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\X-Plane 10\SDK\CHeaders\XPLM;F:\X-Plane 10\SDK\CHeaders\Widgets;$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDLL;WIN32;_CRT_SECURE_NO_WARNINGS;XPLM;VERBOSE;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;XPLM200=1;XPLM210=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM.lib;XPWidgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\X-Plane 10\SDK\Libraries\Win</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,32 +138,34 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\X-Plane 10\SDK\CHeaders\XPLM;F:\X-Plane 10\SDK\CHeaders\Widgets;$(SolutionDir)\libdsfmap;$(SolutionDir)\libnavmap;$(SolutionDir)\includes;$(SolutionDir)\libglhelpers;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDLL;WIN32;_CRT_SECURE_NO_WARNINGS;XPLM;VERBOSE;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;XPLM200=1;XPLM210=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM_64.lib;XPWidgets_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\X-Plane 10\SDK\Libraries\Win</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="gl_context.h" />
-    <ClInclude Include="inavmap.h" />
-    <ClInclude Include="navmap.h" />
-    <ClInclude Include="navmap_thread.h" />
-    <ClInclude Include="simple_marker.h" />
-    <ClInclude Include="simple_marker_impl.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="gl_context.cpp" />
-    <ClCompile Include="navmap.cpp" />
-    <ClCompile Include="navmap_thread.cpp" />
-    <ClCompile Include="simple_marker.cpp" />
-    <ClCompile Include="simple_marker_impl.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\libdsfmap\libdsfmap.vcxproj">
+      <Project>{93e110d2-4d4e-4a87-87c2-2f95240ff034}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\libglhelpers\libglhelpers.vcxproj">
       <Project>{6b0d85fb-b871-4709-b03c-d303f1decef4}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\libnavmap\libnavmap.vcxproj">
+      <Project>{edfee4de-63a2-40a3-a1e3-ac1183af4a78}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dsfnavmap_thread.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dsfnavmap_thread.h" />
+    <ClInclude Include="include_gl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

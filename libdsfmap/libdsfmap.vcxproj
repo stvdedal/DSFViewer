@@ -128,10 +128,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dsf_map_impl.cpp" />
     <ClCompile Include="dsf_render.cpp" />
     <ClCompile Include="dsf_map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dsf_map_impl.h" />
     <ClInclude Include="dsf_render.h" />
     <ClInclude Include="dsf_map.h" />
     <ClInclude Include="utilities.h" />
