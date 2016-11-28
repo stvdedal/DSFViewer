@@ -100,6 +100,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM.lib;XPWidgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\X-Plane 10\SDK\Libraries\Win</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -112,6 +113,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM_64.lib;XPWidgets_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\X-Plane 10\SDK\Libraries\Win</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,6 +153,9 @@
   <ItemGroup>
     <ProjectReference Include="..\libdsfmap\libdsfmap.vcxproj">
       <Project>{93e110d2-4d4e-4a87-87c2-2f95240ff034}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libextract\libextract.vcxproj">
+      <Project>{26df9de4-9d80-4b98-8baa-405253015088}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libglhelpers\libglhelpers.vcxproj">
       <Project>{6b0d85fb-b871-4709-b03c-d303f1decef4}</Project>

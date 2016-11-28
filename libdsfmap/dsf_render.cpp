@@ -319,67 +319,14 @@ bool DsfRender::loadFromFile(const char* file)
     }
     catch (...)
     {
-        std::cerr << "Error: dsf exception" << std::endl;
+        std::cerr << "[DsfMap] Error: dsf exception. " << file << std::endl;
     }
     if (!result)
     {
-        std::cerr << "Error: dsf error" << std::endl;
+        std::cerr << "[DsfMap] Error: dsf error. " << file << std::endl;
     }
 
     return result;
-
-#if 0
-    system("del /Q tmp\\extracted_dsf\\*");
-
-    const char* root_dir = "F:\\X-Plane 10\\Global Scenery\\X-Plane 10 Global Scenery\\Earth nav data";
-    const char* extact_dir = "C:\\Windows\\Temp";
-    char folder[64];
-    snprintf(folder, sizeof(folder), "%+02d%+04d", lat - lat % 10, lon - lon % 10);
-    char file[64];
-    snprintf(file, sizeof(file), "%+02d%+04d.dsf", lat, lon);
-    char fullpath[512];
-    snprintf(fullpath, sizeof(fullpath), "%s\\%s\\%s", root_dir, folder, file);
-    char cmd[512];
-    snprintf(cmd, sizeof(cmd), "\"\"%s\" x \"%s\" -o%s\" >NUL", "C:\\Program Files\\7-Zip\\7z.exe", fullpath, extact_dir);
-    char extracted_file[64];
-    snprintf(extracted_file, sizeof(extracted_file), "%s\\%s", extact_dir, file);
-
-    int rv = system(cmd);
-    if (rv == 0)
-    {
-        bool result = false;
-        try
-        {
-            dsf::File dsfFile;
-            if (dsfFile.open(extracted_file) &&
-                dsfFile.header_ok() &&
-                dsfFile.md5sum_ok())
-            {
-                dsfFile.prepare();
-
-                DsfConstructor<std::list<DrawElements>> constructor(_dsf_objects);
-                result = dsfFile.exec(&constructor);
-            }
-        }
-        catch (...)
-        {
-            std::cerr << "Error: dsf exception" << std::endl;
-        }
-        if (!result)
-        {
-            std::cerr << "Error: dsf error" << std::endl;
-        }
-    }
-    else
-    {
-        std::cerr << "Error: file \"" << fullpath << "\" not extracted (rv=" << rv << ")" << std::endl;
-    }
-
-    char delcmd[512];
-    snprintf(delcmd, sizeof(delcmd), "del /Q %s", extracted_file);
-
-    system(delcmd);
-#endif
 }
 
 void DsfRender::setTransform(const glm::mat4& m)
@@ -387,13 +334,14 @@ void DsfRender::setTransform(const glm::mat4& m)
     _transform = m;
 }
 
-void DsfRender::render(GLuint transformLoc) const
+void DsfRender::render(GLuint transformLoc, bool renderBorder) const
 {
     glEnable(GL_PRIMITIVE_RESTART);
     glPrimitiveRestartIndex(std::numeric_limits<GLuint>::max());
 
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(_transform));
-    //_rectangle();
+    if (renderBorder)
+        _rectangle();
     for (auto&& draw : _dsf_objects)
         draw();
 }

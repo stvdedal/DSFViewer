@@ -17,9 +17,7 @@ class DsfMapImpl
     std::map<std::pair<int, int>, DsfRender> _objects;
 
     std::string _dsf_directory;
-    std::string _tmp_directory;
 
-    static bool extract(const std::string& packedFile, const std::string& outputDir);
     void loadDsf(DsfRender* dsf, int lon, int lat);
 
 public:

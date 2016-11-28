@@ -1,10 +1,20 @@
 #define _CRT_SECURE_NO_DEPRECATE
 #include <stdio.h>
 #include <iostream>
+
+#include <extract.h>
 #include "dsf_file.h"
+
+#ifdef _WIN32
+#define FILE_SEPARATOR   '\\'
+#else
+#define FILE_SEPARATOR   '/'
+#endif
 
 namespace dsf
 {
+    std::string File::tmpDirectory;
+
     bool File::read(const char* name, std::vector<char>& buffer)
     {
         FILE* f = fopen(name, "rb");
@@ -35,24 +45,59 @@ namespace dsf
         return true;
     }
 
-    bool File::extract(const std::vector<char>& src, std::vector<char>& dst)
+    void File::setTmpDirectory(const std::string& tmpDir)
     {
-        // TODO: 7z extraction
-
-        dst = src;
-        return true;
+        tmpDirectory = tmpDir;
     }
 
     File::File()
     {
     }
 
-    bool File::open(const char* name)
+    bool File::open(const char* fullname)
     {
-        std::vector<char> tmpbuffer;
-        if (!read(name, tmpbuffer) || !extract(tmpbuffer, _buffer))
+        unsigned char header[16];
+        
+        FILE* f = fopen(fullname, "rb");
+        if (!f)
             return false;
-        return true;
+        if (fread(header, 1, sizeof(header), f) != sizeof(header))
+        {
+            fclose(f);
+            return false;
+        }
+        fclose(f);
+
+        if (dsf::header_ok(header, sizeof(header)))
+        {
+            // dsf file is already unpacked
+            return read(fullname, _buffer);
+        }
+
+        const char *dsfFile = strrchr(fullname, FILE_SEPARATOR);
+        if (!dsfFile)
+            dsfFile = fullname;
+        
+        if (tmpDirectory.empty())
+        {
+            std::cerr << "[Dsf] ERROR: temp path not set. Use \"File::setTmpDirectory(<some dir>)\"" << std::endl;
+            return false;
+        }
+
+        char extractedFile[64];
+        snprintf(extractedFile, sizeof(extractedFile), "%s\\%s", tmpDirectory.c_str(), dsfFile);
+
+        if (!extract(fullname, tmpDirectory.c_str()))
+        {
+            std::cerr << "[Dsf] Error: file \"" << fullname << "\" not extracted to " << tmpDirectory << std::endl;
+            std::remove(extractedFile);
+            return false;
+        }
+
+        bool result = read(extractedFile, _buffer);
+        std::remove(extractedFile);
+        
+        return result;
     }
 
     bool File::header_ok() const

@@ -22,7 +22,7 @@ public:
 
     bool loadFromFile(const char* file);
     void setTransform(const glm::mat4& m);
-    void render(GLuint transformLoc) const;
+    void render(GLuint transformLoc, bool renderBorder) const;
 
     int age;
 };
