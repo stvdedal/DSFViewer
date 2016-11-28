@@ -8,6 +8,8 @@
 #include <cmath>
 #include <cstdio>
 
+#include <dsf_file.h>
+
 const GLchar* DsfMapImpl::vertexShaderSource = R"(
 #version 330 core
 layout (location = 0) in vec3 position;
@@ -45,29 +47,8 @@ void DsfMapImpl::loadDsf(DsfRender* dsf, int lon, int lat)
     snprintf(dsfFile, sizeof(dsfFile), "%+02d%+04d.dsf", lat, lon);
     char fullpath[512];
     snprintf(fullpath, sizeof(fullpath), "%s\\%s\\%s", _dsf_directory.c_str(), dsfDir, dsfFile);
-    char extracted_file[64];
-    snprintf(extracted_file, sizeof(extracted_file), "%s\\%s", _tmp_directory.c_str(), dsfFile);
 
-    if (extract(fullpath, _tmp_directory))
-    {
-        bool result = dsf->loadFromFile(extracted_file);
-        std::cerr << extracted_file << " result="<< result << std::endl;
-    }
-    else
-    {
-        std::cerr << "[DsfMap] Error: file \"" << extract << "\" not extracted" << std::endl;
-    }
-    std::remove(extracted_file);
-}
-
-bool DsfMapImpl::extract(const std::string& packedFile, const std::string& outputDir)
-{
-    char cmd[512];
-    snprintf(cmd, sizeof(cmd), "\"\"%s\" x \"%s\" -o%s\" >NUL",
-        "C:\\Program Files\\7-Zip\\7z.exe",
-        packedFile.c_str(),
-        outputDir.c_str());
-    return system(cmd) == 0;
+    dsf->loadFromFile(fullpath);
 }
 
 void DsfMapImpl::setDsfDirectory(const std::string& dir)
@@ -77,14 +58,14 @@ void DsfMapImpl::setDsfDirectory(const std::string& dir)
 
 void DsfMapImpl::setTmpDirectory(const std::string& dir)
 {
-    _tmp_directory = dir;
+    dsf::File::setTmpDirectory(dir);
 }
 
 void DsfMapImpl::prepare(double lon, double lat, double scale_x, double scale_y)
 {
-    if (_dsf_directory.empty() || _tmp_directory.empty())
+    if (_dsf_directory.empty())
     {
-        std::cerr << "[DsfMap] ERROR: directories are empty" << std::endl;
+        std::cerr << "[DsfMap] ERROR: dsf path not set" << std::endl;
         return;
     }
 
@@ -116,10 +97,7 @@ void DsfMapImpl::prepare(double lon, double lat, double scale_x, double scale_y)
             DsfRender* dsf = &_objects[std::make_pair(dsf_lon, dsf_lat)];
 
             if (dsf->age < 0)
-            {
                 loadDsf(dsf, dsf_lon, dsf_lat);
-                //dsf->load(dsf_lon, dsf_lat);
-            }
             dsf->age = 0;
 
             glm::mat4 transform;
@@ -151,6 +129,6 @@ void DsfMapImpl::render() const
     for (auto&& p : _objects)
     {
         if (p.second.age == 0)
-            p.second.render(transformLoc);
+            p.second.render(transformLoc, false);
     }
 }

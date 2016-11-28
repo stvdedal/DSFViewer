@@ -100,6 +100,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM.lib;XPWidgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\X-Plane 10\SDK\Libraries\Win</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -112,6 +113,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;odbc32.lib;odbccp32.lib;glew32.lib;glfw3.lib;XPLM_64.lib;XPWidgets_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\X-Plane 10\SDK\Libraries\Win</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
