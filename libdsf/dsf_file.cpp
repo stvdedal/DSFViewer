@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_DEPRECATE
 #include <stdio.h>
 #include <iostream>
+
+#include <extract.h>
 #include "dsf_file.h"
 
 #ifdef _WIN32
@@ -69,7 +71,6 @@ namespace dsf
         if (dsf::header_ok(header, sizeof(header)))
         {
             // dsf file is already unpacked
-            std::cerr << "[Dsf] dsf file \"" << fullname << "\" is already unpacked" << std::endl;
             return read(fullname, _buffer);
         }
 
@@ -79,25 +80,23 @@ namespace dsf
         
         if (tmpDirectory.empty())
         {
-            std::cerr << "[Dsf] ERROR: temp path not set" << std::endl;
+            std::cerr << "[Dsf] ERROR: temp path not set. Use \"File::setTmpDirectory(<some dir>)\"" << std::endl;
             return false;
         }
 
         char extractedFile[64];
         snprintf(extractedFile, sizeof(extractedFile), "%s\\%s", tmpDirectory.c_str(), dsfFile);
 
-        char cmd[512];
-        snprintf(cmd, sizeof(cmd), "\"\"%s\" x \"%s\" -o%s\" >NUL", "C:\\Program Files\\7-Zip\\7z.exe", fullname, tmpDirectory.c_str());
-        if (system(cmd) != 0)
+        if (!extract(fullname, tmpDirectory.c_str()))
         {
             std::cerr << "[Dsf] Error: file \"" << fullname << "\" not extracted to " << tmpDirectory << std::endl;
+            std::remove(extractedFile);
             return false;
         }
 
         bool result = read(extractedFile, _buffer);
-
         std::remove(extractedFile);
-
+        
         return result;
     }
 

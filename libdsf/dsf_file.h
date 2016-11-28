@@ -9,6 +9,8 @@ namespace dsf
 {
     class File
     {
+        static std::string tmpDirectory;
+
         std::vector<char> _buffer;
         Atoms             _atoms;
 
@@ -16,8 +18,6 @@ namespace dsf
 
         File(const File&) = delete;
         File& operator=(const File&) = delete;
-
-        static std::string tmpDirectory;
 
     public:
         static void setTmpDirectory(const std::string& tmpDir);
