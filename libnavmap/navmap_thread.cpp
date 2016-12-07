@@ -33,7 +33,7 @@ void NavMapThread::work()
             GLuint TEX;
             glGenTextures(1, &TEX);
             glBindTexture(GL_TEXTURE_2D, TEX);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -50,7 +50,7 @@ void NavMapThread::work()
                 double map_Scale_Y = _Map_Scale_Y;
 
                 lck.unlock();
-                glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+                glClearColor(1.0f, 1.0f, 1.0f, 0.3f);
                 glClear(GL_COLOR_BUFFER_BIT);
 
                 navMap->setPlane(planeMarker_Lon, planeMarker_Lat, planeMarker_Hdg);
