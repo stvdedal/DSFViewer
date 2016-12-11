@@ -33,11 +33,6 @@ public:
 
     virtual bool isMarkerOutOfBorder() const;
 
-    // depricated
-    void setPlane(double lon, double lat, double hdg);
-    void setPlaneScale(double scale_x, double scale_y);
-    void setScale(double scale_x, double scale_y);
-
     void render();
 };
 

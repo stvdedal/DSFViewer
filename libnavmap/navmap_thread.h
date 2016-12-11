@@ -26,6 +26,7 @@ class NavMapThread : public INavMap
     double _marker_scale_y;
 
     int _width, _height;
+    float _alpha;
 
     bool _isMarkerOutOfBorder;
 
@@ -67,6 +68,8 @@ public:
     virtual void setMarkerScale(double scale_x, double scale_y);
 
     virtual bool isMarkerOutOfBorder() const;
+
+    void setAlpha(float alpha);
 };
 
 #endif

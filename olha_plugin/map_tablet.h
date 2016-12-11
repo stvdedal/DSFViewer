@@ -33,12 +33,15 @@ namespace olha
         Mode _mode;
         MapMode _map_mode;
 
+        bool _isLightingEnabled;
+
         XPLMDataRef _drefPosLongitude;
         XPLMDataRef _drefPosLatitude;
         XPLMDataRef _drefPosMagPsi;
 
         XPLMDataRef _drefFlightMode;
         XPLMDataRef _drefLEDNearestAiroportApproach;
+        XPLMDataRef _drefLightingEnable;
 
         double _plane_lon;
         double _plane_lat;
@@ -84,8 +87,12 @@ namespace olha
         bool _ledStatusAiroportApproach;
 
         static int getLedStatusNearestAiroport(void* inRefcon);
+
         static int getDataRefFlightMode(void* inRefcon);
         static void setDataRefFlightMode(void* inRefcon, int inValue);
+
+        static int getDataRefLighting(void* inRefcon);
+        static void setDataRefLighting(void* inRefcon, int inValue);
 
         double getDistanceToNearestAiroport();
 

@@ -107,6 +107,7 @@ namespace olha
         _navMap.setMapScale(_map_scale_x, _map_scale_y);
         _navMap.setMap(_map_lon, _map_lat);
         _navMap.setMarker(_plane_lon, _plane_lat, _plane_hdg);
+        _navMap.setAlpha(_isLightingEnabled ? 0.4f : 0.0f);
     }
 
     float MapTablet::ledStatusUpdater(
@@ -154,6 +155,18 @@ namespace olha
         self->calcMapScale();
     }
 
+    int MapTablet::getDataRefLighting(void* inRefcon)
+    {
+        MapTablet* self = reinterpret_cast<MapTablet*>(inRefcon);
+        return self->_isLightingEnabled ? 1 : 0;
+    }
+
+    void MapTablet::setDataRefLighting(void* inRefcon, int inValue)
+    {
+        MapTablet* self = reinterpret_cast<MapTablet*>(inRefcon);
+        self->_isLightingEnabled = inValue != 0;
+    }
+
     double MapTablet::getDistanceToNearestAiroport()
     {
         float airportLon = float(_plane_lon);
@@ -195,6 +208,7 @@ namespace olha
         _mode = MODE_AIROPORT;
         _map_mode = MAPMODE_AUTO;
 
+        _isLightingEnabled = false;
         _ledStatusAiroportApproachEnable = false;
         _ledStatusAiroportApproach = false;
 
@@ -228,6 +242,26 @@ namespace olha
             true,                           // inIsWritable
             getDataRefFlightMode,           // inReadInt
             setDataRefFlightMode,           // inWriteInt
+            NULL,                           // inReadFloat
+            NULL,                           // inWriteFloat
+            NULL,                           // inReadDouble
+            NULL,                           // inWriteDouble
+            NULL,                           // inReadIntArray
+            NULL,                           // inWriteIntArray
+            NULL,                           // inReadFloatArray
+            NULL,                           // inWriteFloatArray
+            NULL,                           // inReadData
+            NULL,                           // inWriteData
+            this,                           // inReadRefcon
+            this                            // inWriteRefcon
+        );
+
+        _drefLightingEnable = XPLMRegisterDataAccessor(
+            DREF_MAP_TABLET_LIT,
+            xplmType_Int,
+            true,                           // inIsWritable
+            getDataRefLighting,             // inReadInt
+            setDataRefLighting,             // inWriteInt
             NULL,                           // inReadFloat
             NULL,                           // inWriteFloat
             NULL,                           // inReadDouble

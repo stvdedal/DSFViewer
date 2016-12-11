@@ -54,9 +54,11 @@ void NavMapThread::work()
                 double marker_scale_x = _marker_scale_x;
                 double marker_scale_y = _marker_scale_y;
 
+                float alpha = _alpha;
+
                 lck.unlock();
 
-                glClearColor(1.0f, 1.0f, 1.0f, 0.3f);
+                glClearColor(1.0f, 1.0f, 1.0f, _alpha);
                 glClear(GL_COLOR_BUFFER_BIT);
 
                 navMap->setMap(map_lon, map_lat);
@@ -112,6 +114,7 @@ NavMapThread::NavMapThread()
 
     _width = 1;
     _height = 1;
+    _alpha = 1.0f;
 
     _working = false;
 
@@ -212,4 +215,15 @@ bool NavMapThread::isMarkerOutOfBorder() const
     std::unique_lock<std::mutex> lck(_mtx);
     bool isMarkerOutOfBorder = _isMarkerOutOfBorder;
     return isMarkerOutOfBorder;
+}
+
+void NavMapThread::setAlpha(float alpha)
+{
+    _texture.guard.lock();
+    _texture.dirty = true;
+    _texture.guard.unlock();
+
+    std::unique_lock<std::mutex> lck(_mtx);
+    _alpha = alpha;
+    _cv.notify_all();
 }

@@ -24,4 +24,8 @@ const int MAP_TEXTURE_HEIGHT = 1236 - MAP_TEXTURE_BUTTOM;
 // 2 : airoport
 #define DREF_MAP_TABLET_MODE "stvdedal/yak-42/olha/map_tablet_mode"
 
+// 0 : lighting off
+// 1 : lighting on
+#define DREF_MAP_TABLET_LIT "stvdedal/yak-42/olha/map_tablet_lit"
+
 #endif

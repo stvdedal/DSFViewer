@@ -4,10 +4,6 @@
 #include <GL/glew.h>
 #include <iostream>
 
-#if !defined(WITH_DEBUG)
-#define WITH_DEBUG
-#endif
-
 #if defined(WITH_DEBUG)
 inline
 static void checkGLErrors(const char* atFile, const char* atFunc, int atLine)

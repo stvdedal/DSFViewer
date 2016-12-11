@@ -21,7 +21,7 @@ const GLchar* SimpleMarkerImpl::fragmentShaderSource = R"(
 out vec4 color;
 void main()
 {
-    color = vec4(0.9f, 0.0f, 0.0f, 0.6f);
+    color = vec4(0.1f, 0.05f, 0.05f, 1.0f);
 }
 )";
 
@@ -65,8 +65,6 @@ void SimpleMarkerImpl::setTransform()
 
 void SimpleMarkerImpl::setTranslate(double x, double y)
 {
-    std::cerr << "Translate: x=" << x << " y=" << y << std::endl;
-
     _x = GLfloat(x);
     _y = GLfloat(y);
     setTransform();
@@ -88,8 +86,6 @@ void SimpleMarkerImpl::setRotation(double angle)
 void SimpleMarkerImpl::render()
 {
     glUseProgram(_program);
-    GLint transformLoc = glGetUniformLocation(_program, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(_transform));
-
+    glUniformMatrix4fv(glGetUniformLocation(_program, "transform"), 1, GL_FALSE, glm::value_ptr(_transform));
     renderable();
 }
