@@ -12,6 +12,7 @@ public:
     SimpleMarker();
     ~SimpleMarker();
 
+    virtual void setTranslate(double x, double y);
     virtual void setScale(double scale_x, double scale_y);
     virtual void setRotation(double angle);
     virtual void render();

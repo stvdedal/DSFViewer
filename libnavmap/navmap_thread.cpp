@@ -41,23 +41,36 @@ void NavMapThread::work()
 
             if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
             {
-                double planeMarker_Lon = _PlaneMarker_Lon;
-                double planeMarker_Lat = _PlaneMarker_Lat;
-                double planeMarker_Hdg = _PlaneMarker_Hdg;
-                double planeMarker_Scale_X = _PlaneMarker_Scale_X;
-                double planeMarker_Scale_Y = _PlaneMarker_Scale_Y;
-                double map_Scale_X = _Map_Scale_X;
-                double map_Scale_Y = _Map_Scale_Y;
+                double map_lon = _map_lon;
+                double map_lat = _map_lat;
+
+                double map_scale_x = _map_scale_x;
+                double map_scale_y = _map_scale_y;
+
+                double marker_lon = _marker_lon;
+                double marker_lat = _marker_lat;
+                double marker_hdg = _marker_hdg;
+
+                double marker_scale_x = _marker_scale_x;
+                double marker_scale_y = _marker_scale_y;
+
+                float alpha = _alpha;
 
                 lck.unlock();
-                glClearColor(1.0f, 1.0f, 1.0f, 0.3f);
+
+                glClearColor(1.0f, 1.0f, 1.0f, _alpha);
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                navMap->setPlane(planeMarker_Lon, planeMarker_Lat, planeMarker_Hdg);
-                navMap->setScale(map_Scale_X, map_Scale_Y);
-                navMap->setPlaneScale(planeMarker_Scale_X, planeMarker_Scale_Y);
+                navMap->setMap(map_lon, map_lat);
+                navMap->setMapScale(map_scale_x, map_scale_y);
+                navMap->setMarker(marker_lon, marker_lat, marker_hdg);
+                navMap->setMarkerScale(marker_scale_x, marker_scale_y);
+
                 navMap->render();
+
                 lck.lock();
+
+                _isMarkerOutOfBorder = navMap->isMarkerOutOfBorder();
 
                 _texture.guard.lock();
                 _texture.dirty = false;
@@ -86,20 +99,26 @@ void NavMapThread::work()
 
 NavMapThread::NavMapThread()
 {
-    _PlaneMarker_Lon = 0.0;
-    _PlaneMarker_Lat = 0.0;
-    _PlaneMarker_Hdg = 0.0;
+    _map_lon = 0.0;
+    _map_lat = 0.0;
 
-    _PlaneMarker_Scale_X = 0.5;
-    _PlaneMarker_Scale_Y = 0.5;
+    _map_scale_x = 1.0;
+    _map_scale_y = 1.0;
 
-    _Map_Scale_X = 1.0;
-    _Map_Scale_Y = 1.0;
+    _marker_lon = 0.0;
+    _marker_lat = 0.0;
+    _marker_hdg = 0.0;
+
+    _marker_scale_x = 1.0;
+    _marker_scale_y = 1.0;
 
     _width = 1;
     _height = 1;
+    _alpha = 1.0f;
 
     _working = false;
+
+    _isMarkerOutOfBorder = false;
 }
 
 NavMapThread::~NavMapThread()
@@ -134,22 +153,21 @@ void NavMapThread::stop()
     _th.join();
 }
 
-void NavMapThread::setPlane(double lon, double lat, double hdg)
+void NavMapThread::setMap(double lon, double lat)
 {
-    std::unique_lock<std::mutex> lck(_mtx);
-
     _texture.guard.lock();
     _texture.dirty = true;
     _texture.guard.unlock();
 
-    _PlaneMarker_Lon = lon;
-    _PlaneMarker_Lat = lat;
-    _PlaneMarker_Hdg = hdg;
+    std::unique_lock<std::mutex> lck(_mtx);
+
+    _map_lon = lon;
+    _map_lat = lat;
 
     _cv.notify_all();
 }
 
-void NavMapThread::setPlaneScale(double scale_x, double scale_y)
+void NavMapThread::setMapScale(double scale_x, double scale_y)
 {
     _texture.guard.lock();
     _texture.dirty = true;
@@ -157,13 +175,13 @@ void NavMapThread::setPlaneScale(double scale_x, double scale_y)
 
     std::unique_lock<std::mutex> lck(_mtx);
 
-    _PlaneMarker_Scale_X = scale_x;
-    _PlaneMarker_Scale_Y = scale_y;
+    _map_scale_x = scale_x;
+    _map_scale_y = scale_y;
 
     _cv.notify_all();
 }
 
-void NavMapThread::setScale(double scale_x, double scale_y)
+void NavMapThread::setMarker(double lon, double lat, double hdg)
 {
     _texture.guard.lock();
     _texture.dirty = true;
@@ -171,8 +189,41 @@ void NavMapThread::setScale(double scale_x, double scale_y)
 
     std::unique_lock<std::mutex> lck(_mtx);
 
-    _Map_Scale_X = scale_x;
-    _Map_Scale_Y = scale_y;
+    _marker_lon = lon;
+    _marker_lat = lat;
+    _marker_hdg = hdg;
 
+    _cv.notify_all();
+}
+
+void NavMapThread::setMarkerScale(double scale_x, double scale_y)
+{
+    _texture.guard.lock();
+    _texture.dirty = true;
+    _texture.guard.unlock();
+
+    std::unique_lock<std::mutex> lck(_mtx);
+ 
+    _marker_scale_x = scale_x;
+    _marker_scale_y = scale_y;
+
+    _cv.notify_all();
+}
+
+bool NavMapThread::isMarkerOutOfBorder() const
+{
+    std::unique_lock<std::mutex> lck(_mtx);
+    bool isMarkerOutOfBorder = _isMarkerOutOfBorder;
+    return isMarkerOutOfBorder;
+}
+
+void NavMapThread::setAlpha(float alpha)
+{
+    _texture.guard.lock();
+    _texture.dirty = true;
+    _texture.guard.unlock();
+
+    std::unique_lock<std::mutex> lck(_mtx);
+    _alpha = alpha;
     _cv.notify_all();
 }

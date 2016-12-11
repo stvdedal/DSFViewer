@@ -127,17 +127,21 @@ void DsfMapSimpleMarkerNavMapThread::render()
 
 INavMap* navMap;
 
-static double planePosLon = 46.0;
-static double planePosLat = 51.2;
-static double planePosHdg = 45.0;
+static double mapLon = 46.0;
+static double mapLat = 51.2;
 static double mapScaleX = 1.0;
 static double mapScaleY = 1.0;
+
+static double planeLon = 46.0;
+static double planeLat = 51.2;
+static double planeHdg = 45.0;
 
 static void setWindowTitle(GLFWwindow* window)
 {
     char buf[512];
-    snprintf(buf, sizeof(buf), "Nav Map. lon=%f lat=%f hdg=%f sc_x=%f sc_y=%f",
-        planePosLon, planePosLat, planePosHdg, mapScaleX, mapScaleY
+    snprintf(buf, sizeof(buf), "Nav Map. Map: lon=%f lat=%f sc_x=%f sc_y=%f. Plane: lon=%f lat=%f hdg=%f",
+        mapLon, mapLat, mapScaleX, mapScaleY,
+        planeLon, planeLat, planeHdg
     );
     glfwSetWindowTitle(window, buf);
 }
@@ -161,39 +165,73 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
         {
         case GLFW_KEY_LEFT:
             if (mods == 0)
-                planePosLon -= coordStep;
+            {
+                mapLon -= coordStep;
+                navMap->setMap(mapLon, mapLat);
+            }
             else if (mods & GLFW_MOD_SHIFT)
-                planePosHdg -= 1.0;
-            navMap->setPlane(planePosLon, planePosLat, planePosHdg);
+            {
+                planeLon -= coordStep;
+                navMap->setMarker(planeLon, planeLat, planeHdg);
+            }
             break;
         case GLFW_KEY_RIGHT:
             if (mods == 0)
-                planePosLon += coordStep;
+            {
+                mapLon += coordStep;
+                navMap->setMap(mapLon, mapLat);
+            }
             else if (mods & GLFW_MOD_SHIFT)
-                planePosHdg += 1.0;
-            navMap->setPlane(planePosLon, planePosLat, planePosHdg);
+            {
+                planeLon += coordStep;
+                navMap->setMarker(planeLon, planeLat, planeHdg);
+            }
             break;
         case GLFW_KEY_UP:
-            planePosLat += coordStep;
-            navMap->setPlane(planePosLon, planePosLat, planePosHdg);
+            if (mods == 0)
+            {
+                mapLat += coordStep;
+                navMap->setMap(mapLon, mapLat);
+            }
+            else if (mods & GLFW_MOD_SHIFT)
+            {
+                planeLat += coordStep;
+                navMap->setMarker(planeLon, planeLat, planeHdg);
+            }
             break;
         case GLFW_KEY_DOWN:
-            planePosLat -= coordStep;
-            navMap->setPlane(planePosLon, planePosLat, planePosHdg);
+            if (mods == 0)
+            {
+                mapLat -= coordStep;
+                navMap->setMap(mapLon, mapLat);
+            }
+            else if (mods & GLFW_MOD_SHIFT)
+            {
+                planeLat -= coordStep;
+                navMap->setMarker(planeLon, planeLat, planeHdg);
+            }
             break;
-        case GLFW_KEY_PAGE_UP:
+        case GLFW_KEY_INSERT:
             mapScaleX += scaleStep;
             mapScaleY += scaleStep;
-            navMap->setScale(mapScaleX, mapScaleY);
+            navMap->setMapScale(mapScaleX, mapScaleY);
             break;
-        case GLFW_KEY_PAGE_DOWN:
+        case GLFW_KEY_DELETE:
             mapScaleX -= scaleStep;
             mapScaleY -= scaleStep;
             if (mapScaleX < scaleStep)
                 mapScaleX = scaleStep;
             if (mapScaleY < scaleStep)
                 mapScaleY = scaleStep;
-            navMap->setScale(mapScaleX, mapScaleY);
+            navMap->setMapScale(mapScaleX, mapScaleY);
+            break;
+        case GLFW_KEY_PAGE_UP:
+            planeHdg += 1.0;
+            navMap->setMarker(planeLon, planeLat, planeHdg);
+            break;
+        case GLFW_KEY_PAGE_DOWN:
+            planeHdg -= 1.0;
+            navMap->setMarker(planeLon, planeLat, planeHdg);
             break;
         default:
             break;
@@ -252,9 +290,11 @@ int main(int argc, char** argv)
     navMap = new NavMap(&dsfMap, &marker);
 #endif
 
-    navMap->setPlaneScale(0.05, 0.05);
-    navMap->setPlane(planePosLon, planePosLat, planePosHdg);
-    navMap->setScale(mapScaleX, mapScaleY);
+    navMap->setMap(mapLon, mapLat);
+    navMap->setMapScale(mapScaleX, mapScaleY);
+
+    navMap->setMarker(planeLon, planeLat, planeHdg);
+    navMap->setMarkerScale(0.05, 0.05);
 
     glfwSetKeyCallback(window, glfw_key_callback);
     glfwSetWindowSizeCallback(window, glfw_window_size_callback);

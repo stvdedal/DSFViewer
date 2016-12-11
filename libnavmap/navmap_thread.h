@@ -10,19 +10,25 @@
 
 class NavMapThread : public INavMap
 {
-    std::mutex _mtx;
+    mutable std::mutex _mtx;
 
-    double _PlaneMarker_Lon;
-    double _PlaneMarker_Lat;
-    double _PlaneMarker_Hdg;
+    double _map_lon;
+    double _map_lat;
 
-    double _PlaneMarker_Scale_X;
-    double _PlaneMarker_Scale_Y;
+    double _map_scale_x;
+    double _map_scale_y;
 
-    double _Map_Scale_X;
-    double _Map_Scale_Y;
+    double _marker_lon;
+    double _marker_lat;
+    double _marker_hdg;
+
+    double _marker_scale_x;
+    double _marker_scale_y;
 
     int _width, _height;
+    float _alpha;
+
+    bool _isMarkerOutOfBorder;
 
     void work();
     volatile bool _working;
@@ -55,9 +61,15 @@ public:
     void start(int width, int height);
     void stop();
 
-    void setPlane(double lon, double lat, double hdg);
-    void setPlaneScale(double scale_x, double scale_y);
-    void setScale(double scale_x, double scale_y);
+    virtual void setMap(double lon, double lat);
+    virtual void setMapScale(double scale_x, double scale_y);
+
+    virtual void setMarker(double lon, double lat, double hdg);
+    virtual void setMarkerScale(double scale_x, double scale_y);
+
+    virtual bool isMarkerOutOfBorder() const;
+
+    void setAlpha(float alpha);
 };
 
 #endif

@@ -1,40 +1,79 @@
 #include "navmap.h"
+#include <iostream>
 
 NavMap::NavMap(IMapRender* mapRender, IMarkerRender* markerRender)
     :
     _mapRender(mapRender),
     _markerRender(markerRender)
 {
-    _PlaneMarker_Lon = 0.0;
-    _PlaneMarker_Lat = 0.0;
-    _PlaneMarker_Hdg = 0.0;
+    _map_lon = 0.0;
+    _map_lat = 0.0;
 
-    _Map_Scale_X = 1.0;
-    _Map_Scale_Y = 1.0;
+    _map_scale_x = 1.0;
+    _map_scale_y = 1.0;
+
+    _marker_lon = 0.0;
+    _marker_lat = 0.0;
+    _marker_hdg = 0.0;
 }
 
-void NavMap::setPlane(double lon, double lat, double hdg)
+void NavMap::translateMarker()
 {
-    _PlaneMarker_Lon = lon;
-    _PlaneMarker_Lat = lat;
-    _PlaneMarker_Hdg = hdg;
+    double x = (_marker_lon - _map_lon) / (_map_scale_x / 2.0);
+    double y = (_marker_lat - _map_lat) / (_map_scale_y / 2.0);
 
-    _mapRender->prepare(_PlaneMarker_Lon, _PlaneMarker_Lat, _Map_Scale_X, _Map_Scale_Y);
-    _markerRender->setRotation(_PlaneMarker_Hdg);
+    if (x < -1.0)
+        x = -1.0;
+    if (x > +1.0)
+        x = +1.0;
+
+    if (y < -1.0)
+        y = -1.0;
+    if (y > +1.0)
+        y = +1.0;
+
+    _markerRender->setTranslate(x, y);
 }
 
-void NavMap::setPlaneScale(double scale_x, double scale_y)
+void NavMap::setMap(double lon, double lat)
+{
+    _map_lon = lon;
+    _map_lat = lat;
+
+    _mapRender->prepare(_map_lon, _map_lat, _map_scale_x, _map_scale_y);
+    translateMarker();
+}
+
+void NavMap::setMapScale(double scale_x, double scale_y)
+{
+    _map_scale_x = scale_x;
+    _map_scale_y = scale_y;
+
+    _mapRender->prepare(_map_lon, _map_lat, _map_scale_x, _map_scale_y);
+    translateMarker();
+}
+
+void NavMap::setMarker(double lon, double lat, double hdg)
+{
+    _marker_lon = lon;
+    _marker_lat = lat;
+    _marker_hdg = hdg;
+
+    translateMarker();
+    _markerRender->setRotation(_marker_hdg);
+}
+
+void NavMap::setMarkerScale(double scale_x, double scale_y)
 {
     _markerRender->setScale(scale_x, scale_y);
 }
 
-void NavMap::setScale(double scale_x, double scale_y)
+bool NavMap::isMarkerOutOfBorder() const
 {
-    _Map_Scale_X = scale_x;
-    _Map_Scale_Y = scale_y;
+    double x = (_marker_lon - _map_lon) / (_map_scale_x / 2.0);
+    double y = (_marker_lat - _map_lat) / (_map_scale_y / 2.0);
 
-    _mapRender->prepare(_PlaneMarker_Lon, _PlaneMarker_Lat, _Map_Scale_X, _Map_Scale_Y);
-    _markerRender->setRotation(_PlaneMarker_Hdg);
+    return abs(x) > 1.0 || abs(y) > 1.0;
 }
 
 void NavMap::render()
