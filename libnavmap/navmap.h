@@ -10,19 +10,34 @@ class NavMap : public INavMap
     IMapRender* _mapRender;
     IMarkerRender* _markerRender;
 
-    double _PlaneMarker_Lon;
-    double _PlaneMarker_Lat;
-    double _PlaneMarker_Hdg;
+    double _map_lon;
+    double _map_lat;
 
-    double _Map_Scale_X;
-    double _Map_Scale_Y;
+    double _map_scale_x;
+    double _map_scale_y;
+
+    double _marker_lon;
+    double _marker_lat;
+    double _marker_hdg;
+
+    void translateMarker();
 
 public:
     NavMap(IMapRender* mapRender, IMarkerRender* markerRender);
     
+    virtual void setMap(double lon, double lat);
+    virtual void setMapScale(double scale_x, double scale_y);
+
+    virtual void setMarker(double lon, double lat, double hdg);
+    virtual void setMarkerScale(double scale_x, double scale_y);
+
+    virtual bool isMarkerOutOfBorder() const;
+
+    // depricated
     void setPlane(double lon, double lat, double hdg);
     void setPlaneScale(double scale_x, double scale_y);
     void setScale(double scale_x, double scale_y);
+
     void render();
 };
 

@@ -4,6 +4,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <iostream>
+
 const GLchar* SimpleMarkerImpl::vertexShaderSource = R"(
 #version 330 core
 layout (location = 0) in vec3 position;
@@ -34,6 +36,8 @@ const GLuint SimpleMarkerImpl::vertexElements[] = { 0, 1, 2 };
 
 SimpleMarkerImpl::SimpleMarkerImpl()
 {
+    _x = 0.0f;
+    _y = 0.0f;
     _scale_x = 1.0f;
     _scale_y = 1.0f;
     _rotation = 0.0f;
@@ -50,25 +54,35 @@ SimpleMarkerImpl::~SimpleMarkerImpl()
     glDeleteProgram(_program);
 }
 
-void SimpleMarkerImpl::setScale(double scale_x, double scale_y)
+void SimpleMarkerImpl::setTransform()
 {
-    _scale_x = GLfloat(scale_x);
-    _scale_y = GLfloat(scale_y);
-
     glm::mat4 transform;
+    transform = glm::translate(transform, glm::vec3(_x, _y, 0.0f));
     transform = glm::rotate(transform, glm::radians(-_rotation), glm::vec3(0.0, 0.0, 1.0));
     transform = glm::scale(transform, glm::vec3(_scale_x, _scale_y, 1.0f));
     _transform = transform;
 }
 
+void SimpleMarkerImpl::setTranslate(double x, double y)
+{
+    std::cerr << "Translate: x=" << x << " y=" << y << std::endl;
+
+    _x = GLfloat(x);
+    _y = GLfloat(y);
+    setTransform();
+}
+
+void SimpleMarkerImpl::setScale(double scale_x, double scale_y)
+{
+    _scale_x = GLfloat(scale_x);
+    _scale_y = GLfloat(scale_y);
+    setTransform();
+}
+
 void SimpleMarkerImpl::setRotation(double angle)
 {
     _rotation = GLfloat(angle);
-
-    glm::mat4 transform;
-    transform = glm::rotate(transform, glm::radians(-_rotation), glm::vec3(0.0, 0.0, 1.0));
-    transform = glm::scale(transform, glm::vec3(_scale_x, _scale_y, 1.0f));
-    _transform = transform;
+    setTransform();
 }
 
 void SimpleMarkerImpl::render()

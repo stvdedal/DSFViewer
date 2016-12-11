@@ -10,12 +10,12 @@
 
 bool extract(const char* packed_file, const char* output_dir)
 {
-    const char* binq = "\"C:\\Program Files\\7-Zip\\7z.exe\"";
+#ifdef _WIN32
+    const char* bin = "\"C:\\Program Files\\7-Zip\\7z.exe\"";
 
     char cmd[512];
-    snprintf(cmd, sizeof(cmd), "%s x \"%s\" -o%s", binq, packed_file, output_dir);
+    snprintf(cmd, sizeof(cmd), "%s x \"%s\" -o%s", bin, packed_file, output_dir);
 
-#ifdef _WIN32
     STARTUPINFOA si;
     PROCESS_INFORMATION pi;
 
@@ -39,9 +39,6 @@ bool extract(const char* packed_file, const char* output_dir)
     }
     return result;
 #else
-    char cmdq[512];
-    snprintf(cmdq, sizeof(cmdq), "\"%s\" >NUL", cmd);
-
-    return system(cmdq) == EXIT_SUCCESS;
+#error NOT IMPLEMENTED
 #endif
 }

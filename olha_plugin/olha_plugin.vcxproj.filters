@@ -18,15 +18,24 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dsfnavmap_thread.cpp">
+    <ClCompile Include="map_tablet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dsfnavmap_thread.h">
+    <ClInclude Include="include_gl.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="include_gl.h">
+    <ClInclude Include="map_tablet.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="conf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
