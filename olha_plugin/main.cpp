@@ -2,15 +2,11 @@
 
 #include <XPLMPlugin.h>
 #include <XPLMDisplay.h>
-#include <XPLMDataAccess.h>
-#include <XPLMUtilities.h>
-#include <XPLMGraphics.h>
-#include <XPLMProcessing.h>
-
 
 #include "conf.h"
 #include "log.h"
 #include "map_tablet.h"
+#include "adf_helper.h"
 
 static olha::MapTablet* mapTablet;
 
@@ -27,12 +23,16 @@ PLUGIN_API int XPluginStart(char* outName, char* outSig, char* outDesc)
     mapTablet = new olha::MapTablet;
 
     XPLMRegisterDrawCallback(MyDrawCallback, xplm_Phase_Gauges, 0, NULL);
+
+    adf_helper::registerDataRef();
+
     return 1;
 }
 
 PLUGIN_API void	XPluginStop(void)
 {
     XPLMUnregisterDrawCallback(MyDrawCallback, xplm_Phase_Gauges, 0, NULL);
+    adf_helper::unregisterDataRef();
     delete mapTablet;
     closeLog();
 }

@@ -24,6 +24,9 @@
     <ClCompile Include="log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="adf_helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include_gl.h">
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="log.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adf_helper.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

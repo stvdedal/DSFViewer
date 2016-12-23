@@ -106,8 +106,6 @@ namespace olha
         // device power off
         void off();
 
-        void lighting(double value);
-
         void render();
     };
 
