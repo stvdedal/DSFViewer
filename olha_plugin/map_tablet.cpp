@@ -104,10 +104,10 @@ namespace olha
             }
         }
 
+        _navMap.setAlpha(_isLightingEnabled ? 0.20f : 0.0f);
         _navMap.setMapScale(_map_scale_x, _map_scale_y);
         _navMap.setMap(_map_lon, _map_lat);
         _navMap.setMarker(_plane_lon, _plane_lat, _plane_hdg);
-        _navMap.setAlpha(_isLightingEnabled ? 0.4f : 0.0f);
     }
 
     float MapTablet::ledStatusUpdater(
@@ -214,7 +214,7 @@ namespace olha
 
         _drefPosLongitude = XPLMFindDataRef("sim/flightmodel/position/longitude");
         _drefPosLatitude = XPLMFindDataRef("sim/flightmodel/position/latitude");
-        _drefPosMagPsi = XPLMFindDataRef("sim/flightmodel/position/magpsi");
+        _drefPosMagPsi = XPLMFindDataRef("sim/flightmodel/position/mag_psi");
 
         _drefLEDNearestAiroportApproach = XPLMRegisterDataAccessor(
             DREF_LED_NEAREST_AIROPORT_APPROACH,
@@ -305,6 +305,10 @@ namespace olha
         _status_on = false;
         XPLMDestroyFlightLoop(_ledStatusUpdaterId);
         XPLMDestroyFlightLoop(_flightDataUpdaterId);
+
+        XPLMUnregisterDataAccessor(_drefLEDNearestAiroportApproach);
+        XPLMUnregisterDataAccessor(_drefFlightMode);
+        XPLMUnregisterDataAccessor(_drefLightingEnable);
     }
 
     void MapTablet::on()
@@ -321,6 +325,7 @@ namespace olha
         _map_lon = _plane_lon;
         _map_lat = _plane_lat;
 
+        _navMap.setAlpha(_isLightingEnabled ? 0.20f : 0.0f);
         _navMap.setMap(_map_lon, _plane_lat);
         _navMap.setMapScale(_map_scale_x, _map_scale_y);
         _navMap.setMarker(_plane_lon, _plane_lat, _plane_hdg);
@@ -338,11 +343,6 @@ namespace olha
         XPLMScheduleFlightLoop(_flightDataUpdaterId, 0, true);
         XPLMScheduleFlightLoop(_ledStatusUpdaterId, 0, true);
         _navMap.stop();
-    }
-
-    void MapTablet::lighting(double value)
-    {
-
     }
 
     void MapTablet::render()

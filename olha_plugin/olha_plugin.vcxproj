@@ -165,11 +165,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="adf_helper.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map_tablet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="adf_helper.h" />
     <ClInclude Include="conf.h" />
     <ClInclude Include="include_gl.h" />
     <ClInclude Include="log.h" />
